@@ -1,0 +1,14 @@
+#package directory
+node_modules
+
+#login info
+secrets.yml
+serverless.yml
+.env
+*.pem
+
+#packaged serverless directory
+.serverless
+
+#channel info
+channels.json
