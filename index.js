@@ -30,9 +30,4 @@ function main() {
 
 }
 
-//main();
-const fs = require('fs');
-
-if (!fs.existsSync('./channels1.json')) {
-  console.log("doesn't exist");
-}
+main();
