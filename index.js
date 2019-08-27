@@ -9,8 +9,6 @@ function outAndExit(name) {
 
 function main() {
 
-  if
-
   console.log(`_________\n`);
 
   if (process.env.TTN_USER === undefined)
