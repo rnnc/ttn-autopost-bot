@@ -17,7 +17,7 @@ function main() {
     outAndExit("TTN_PASS");
   if (process.env.YOUTUBE_API_KEY === undefined)
     outAndExit("YOUTUBE_API_KEY");
-  if (process.env.DEFAULT_TEIME === undefined)
+  if (process.env.DEFAULT_TIME === undefined)
     outAndExit("DEFAULT_TIME");
 
   setInterval(() => {
