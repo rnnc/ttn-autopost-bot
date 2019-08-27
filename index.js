@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({path: __dirname + '/.env'});
 
 const flow = require('./handler');
 
@@ -8,6 +8,8 @@ function outAndExit(name) {
 }
 
 function main() {
+
+  if
 
   console.log(`_________\n`);
 
@@ -30,4 +32,9 @@ function main() {
 
 }
 
-main();
+//main();
+const fs = require('fs');
+
+if (!fs.existsSync('./channels1.json')) {
+  console.log("doesn't exist");
+}

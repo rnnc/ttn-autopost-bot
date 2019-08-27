@@ -6,6 +6,11 @@ const { postVideo } = require('./bot');
 
 module.exports = function flow() {
 
+  if (!fs.existsSync('./channels.json')) {
+    console.log("channels.json doesn't exit");
+    process.exit();
+  }
+
   let cacheData = JSON.parse(fs.readFileSync('./channels.json'));
 
   const { id, title } = cacheData[0].videoCache;

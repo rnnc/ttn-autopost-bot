@@ -4,7 +4,6 @@ const { YOUTUBE_API_KEY } = process.env;
 
 module.exports.getLatestVideo = async (channelId) => {
 
-
   const rURI = buildRequestUrl(channelId);
 
   let reqData;
