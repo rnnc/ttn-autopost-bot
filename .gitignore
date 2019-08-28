@@ -12,3 +12,5 @@ serverless.yml
 
 #channel info
 channels.json
+
+playground.js

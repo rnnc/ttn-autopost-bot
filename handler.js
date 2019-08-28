@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { buildYTLink } = require('./utils');
+const { buildYTLink, isObjectEmpty } = require('./utils');
 const { getLatestVideo } = require('./youtubeAPI');
 const { postVideo } = require('./bot');
 
@@ -11,24 +11,25 @@ module.exports = function flow() {
     process.exit();
   }
 
+  // let on purpose, so that same variable can be modified & reinserted into file
   let cacheData = JSON.parse(fs.readFileSync('./channels.json'));
 
   const { id, title } = cacheData[0].videoCache;
 
   getLatestVideo(cacheData[0].channelId)
     .then(async data => {
-      // if there's no prev cache/different cache, write latest to cache
-      if (id === "" || data.videoId !== id) {
-        cacheData[0].videoCache = {
-          id: data.videoId,
-          title: data.title
-        }
-        fs.writeFileSync('./channels.json', JSON.stringify(cacheData, null, 2));
 
+      // if there's no prev cache/older cache, write latest to cache
+      if (isObjectEmpty(cacheData[0].videoCache) ||
+        (new Date(data.publishedAt)) > (new Date(cacheData[0].videoCache.publishedAt))) {
+
+        cacheData[0].videoCache = data;
+
+        fs.writeFileSync('./channels.json', JSON.stringify(cacheData, null, 2));
         // post video if ids not the same or empty
         // presumed latest retrieved videoId is newest video
         console.log('Posting video\n')
-        await postVideo(buildYTLink(data.videoId));
+        await postVideo(buildYTLink(data.id));
         return;
       }
 
@@ -39,3 +40,4 @@ module.exports = function flow() {
     .finally(() => console.log('Exiting\n_________\n'));
 
 }
+

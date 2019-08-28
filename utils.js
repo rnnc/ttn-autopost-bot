@@ -19,3 +19,16 @@ module.exports.buildYTLink = (videoId) => {
 
   return `https://www.youtube.com/watch?v=${videoId}`;
 }
+
+/** 
+ * checks if object is empty
+ * @param {Object} obj Object
+ * @return {Boolean} isempty or not
+*/
+module.exports.isObjectEmpty = (obj) => {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key))
+      return false;
+  }
+  return true;
+}

@@ -3,37 +3,59 @@ const axios = require('axios');
 const { YOUTUBE_API_KEY } = process.env;
 
 module.exports.getLatestVideo = async (channelId) => {
+  const upListURI = buildChannelUploadPlaylistURL(channelId);
 
-  const rURI = buildRequestUrl(channelId);
+  let uploadPlaylistId;
 
-  let reqData;
-
+  // gets upload playlistId of the channel first
   try {
-    reqData = (await axios.get(rURI)).data;
-  } catch (e) {
-    throw e.toJSON();
-  }
+    const reqData = (await axios.get(upListURI)).data.items[0];
+    uploadPlaylistId = reqData.contentDetails.relatedPlaylists.uploads;
+  } catch (e) { throw `\nYT Axios Request Error (Channel Upload Playlist URL)\n${e.json}` };
 
-  return parseData(reqData);
+  const upVidURI = buildLatestUploadURL(uploadPlaylistId);
+
+  // gets latest video in upload playlist of channel
+  // and parses data to be returned
+  try {
+    const { snippet, contentDetails } = (await axios.get(upVidURI)).data.items[0];
+
+    return ({
+      id: contentDetails.videoId,
+      title: snippet.title,
+      publishedAt: snippet.publishedAt
+    });
+
+  } catch (e) { throw `\nYT Axios Request Error (Latest Upload URL)\n${e.json}` };
+
 }
 
-function buildRequestUrl(channelId) {
 
-  return "https://www.googleapis.com/youtube/v3/search" +
-    `?part=snippet&channelId=${channelId}&` +
-    "maxResults=2&fields=items(id%2Csnippet(publishedAt%2Ctitle))" +
-    `&key=${YOUTUBE_API_KEY}`;
-
+function buildLatestUploadURL(uploadPlaylistId) {
+  return `https://www.googleapis.com/youtube/v3/playlistItems` +
+    `?part=snippet%2CcontentDetails&maxResults=1&fields=items(contentDetails%2FvideoId%2Csnippet(publishedAt%2Ctitle))` +
+    `&playlistId=${uploadPlaylistId}` +
+    `&key=${YOUTUBE_API_KEY}`
 }
 
-function parseData(raw_data) {
+function buildChannelUploadPlaylistURL(channelId) {
 
-  const { items } = raw_data;
+  return `https://www.googleapis.com/youtube/v3/channels`
+    + `?part=contentDetails&id=${channelId}`
+    + `&key=${YOUTUBE_API_KEY}`;
 
-  return {
-    title: items[0].snippet.title,
-    videoId: items[0].id.videoId,
-    //link: `https://www.youtube.com/watch?v=${items[0].id.videoId}`
-  }
+  // for dynamic selection of either channel name or channel id
+  
+  /* return `https://www.googleapis.com/youtube/v3/channels`
+    + `?part=contentDetails&${() => {
+
+      if (nameIdObj.name)
+        return `forUsername=${nameIdObj.name}`
+      if (nameIdObj.id)
+        return `id${nameIdObj.id}`
+      else
+        throw 'nameIdObj undefined';
+
+    }}`
+    + `&key=${YOUR_API_KEY}`; */
 }
-

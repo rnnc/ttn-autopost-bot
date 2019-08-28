@@ -11,6 +11,8 @@ const {
   WAIT_SELECTOR_SUBMIT, QUEUE_VIDEO_FORM_SUBMIT
 } = require('./constants');
 
+const { TTN_USER, TTN_PASS } = process.env;
+
 //const { delay } = require('./utils');
 
 module.exports.postVideo = async (video_url) => {
@@ -46,8 +48,8 @@ module.exports.postVideo = async (video_url) => {
   // Login Sequence
   console.log('Logging In.....');
   await page.click(LOGIN_BUTTON);
-  await page.type(USERNAME_INPUT, process.env.TTN_USER);
-  await page.type(PASSWORD_INPUT, process.env.TTN_PASS);
+  await page.type(USERNAME_INPUT, TTN_USER);
+  await page.type(PASSWORD_INPUT, TTN_PASS);
   await page.click(LOGIN_SUBMIT);
   await page.waitForSelector(WAIT_SELECTOR_LOGIN);
 
