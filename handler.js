@@ -37,7 +37,7 @@ module.exports = function flow() {
 
     })
     .catch(e => console.log(e))
-    .finally(() => console.log('Exiting\n_________\n'));
+    .finally(() => console.log('\nExiting\n_________\n'));
 
 }
 

@@ -37,7 +37,6 @@ module.exports.postVideo = async (video_url) => {
 
     await dialog.dismiss();
     await browser.close();
-    console.log('Exiting\n_________\n');
   })
 
   // Go to page
