@@ -58,4 +58,6 @@ function buildChannelUploadPlaylistURL(channelId) {
 
     }}`
     + `&key=${YOUR_API_KEY}`; */
+  
+   // https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=UCbpMy0Fg74eXXkvxJrtEn3w&key=AIzaSyB8fYs_uKcetymiP-h6FLwnuYR0JnnK2JE
 }

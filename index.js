@@ -9,7 +9,7 @@ function outAndExit(name) {
 
 function main() {
 
-  console.log(`_________\n`);
+  console.log(`App Started :: ${new Date()}\n_________\n`);
 
   if (process.env.TTN_USER === undefined)
     outAndExit("TTN_USER");
@@ -20,6 +20,9 @@ function main() {
   if (process.env.DEFAULT_TIME === undefined)
     outAndExit("DEFAULT_TIME");
 
+  // first check
+  flow();
+  
   setInterval(() => {
 
     console.log(`Check started :: ${new Date()}`);
